@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace DAL.Models;
+﻿namespace DAL.Models;
 
 public partial class Appointment
 {
@@ -17,6 +15,10 @@ public partial class Appointment
     public TimeSpan StartTime { get; set; }
 
     public TimeSpan EndTime { get; set; }
+
+    public string AppointmentStatus { get; set; } = "0";
+
+    public string AppointmentConclusion { get; set; } = "Write conclusion here";
 
     public virtual Doctor Doctor { get; set; } = null!;
 
