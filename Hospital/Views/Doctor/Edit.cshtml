@@ -1,0 +1,76 @@
+﻿@using DAL.Models;
+@using BLL.ViewModels;
+@model DoctorViewModel
+
+
+<div class="container shadow p-5">
+    <div class="row pb-2">
+        <h2>Edit Doctor</h2>
+    </div>
+
+    <form method="post" asp-action="Edit">
+        <div asp-validation-summary="All"></div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <input type="text" class="form-control mb-3" hidden="hidden" asp-for="DoctorId">
+                <span asp-validation-for="DoctorId" class=" alert-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="FirstName">Name</label>
+                <input type="text" class="form-control" asp-for="FirstName" aria-required="true" placeholder="Adam">
+                <span asp-validation-for="FirstName" class=" alert-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="LastName">Last Name</label>
+                <input type="text" class="form-control" asp-for="LastName" aria-required="true" placeholder="Smith">
+                <span asp-validation-for="LastName" class=" alert-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="Email">Email</label>
+                <input type="text" class="form-control" asp-for="Email" aria-required="true" placeholder="name@mail.com" />
+                <span asp-validation-for="Email" class=" alert-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="DateOfBirth">Date Of Birthday</label>
+                <input type="date" class="form-control" asp-for="DateOfBirth" max="@DateTime.Now.Date.AddYears(-18).ToString("yyyy-MM-dd")" min="@DateTime.Now.Date.AddYears(-120).ToString("yyyy-MM-dd")" aria-required="true" placeholder="01.01.1991">
+                <span asp-validation-for="DateOfBirth" class=" alert-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="Gender">Gender</label>
+                <select asp-for="Gender" class="form-control" aria-required="true" placeholder="Male">
+                    <option value="1">Male</option>
+                    <option value="2">Female</option>
+                    <option value="3">Other</option>
+                </select>
+                <span asp-validation-for="Gender" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="PhoneNumber">Phone</label>
+                <input asp-for="PhoneNumber" class="form-control" aria-required="true" placeholder="+380966666666" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="Address">Address</label>
+                <input asp-for="Address" class="form-control" type="text" aria-required="true" placeholder="Street w 321 a" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label asp-for="PhotoUrl">Address</label>
+                <input asp-for="PhotoUrl" class="form-control" type="text" aria-required="true" placeholder="http:/img.png" />
+                <span asp-validation-for="PhotoUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Select Department:</label>
+                <select asp-for="@Model.DepartmentId"
+                        asp-items="@(new SelectList(Model.Departments, nameof(Department.DepartmentId), nameof(Department.Name)))">
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-lg btn-primary p-2"><i class="bi bi-file-plus-fill"></i>Update</button>
+        <a asp-controller="Doctor" asp-action="Index" class="btn btn-lg btn-warning p-2">Back To Procedures</a>
+    </form>
+
+</div>
+
+

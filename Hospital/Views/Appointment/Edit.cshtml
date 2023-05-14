@@ -1,0 +1,91 @@
+﻿@using BLL.ViewModels;
+@using DAL.Constants;
+@model AppointmentViewModel
+
+<head>
+    <script type="text/javascript">
+        @if (ViewData.ModelState != null)
+        {
+            @if (!ViewData.ModelState.IsValid && ViewData.ModelState["Error"].Errors.Count > 0)
+            {
+                <text>
+                    $(document).ready(function () {
+                        alert('@ViewData.ModelState["Error"].Errors.First().ErrorMessage');
+                    });
+                </text>
+            }
+        }
+    </script>
+</head>
+
+<div class="container shadow p-5">
+    <div class="row pb-2">
+        <h2>Edit Appointment</h2>
+    </div>
+
+    <form method="post" asp-action="Edit">
+        <div asp-validation-summary="All"></div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6" style="margin-bottom:5px">
+                <input asp-for="@Model.AppointmentId" value="@Model.AppointmentId" hidden="hidden" class="form-control" />
+                <span asp-validation-for="@Model.AppointmentId" hidden="hidden" class="text-danger"></span>
+            </div>
+            @if (User.IsInRole(Constants.patientRoleName))
+            {
+                <div class="form-group col-md-6" style="margin-bottom:5px">
+                    <input asp-for="@Model.PatientId" value="@Model.PatientId" hidden="hidden" class="form-control" />
+                    <span asp-validation-for="@Model.PatientId" hidden="hidden" class="text-danger"></span>
+                </div>
+            }
+            @if (User.IsInRole(Constants.doctorRoleName) || User.IsInRole(Constants.adminRoleName))
+            {
+                <select class="form-group col-md-6" asp-for="@Model.PatientId">
+                    @foreach (var patient in Model.Patients)
+                    {
+                        <option class="form-group col-md-6" value=@patient.PatientId> @patient.FirstName @patient.LastName @patient.DateOfBirth.ToString("dd/MM/yyyy")</option>
+                    }
+                </select>
+            }
+            <div class="form-group col-md-6" style="margin-bottom:5px">
+                <label asp-for="@Model.AppointmentDate" class="control-label">Date</label>
+                <input asp-for="@Model.AppointmentDate" type="date" min="@DateTime.Now.Date.ToString("yyyy-MM-dd")" max="@DateTime.Now.Date.AddDays(21).ToString("yyyy-MM-dd")" class="form-control" />
+                <span asp-validation-for="@Model.AppointmentDate" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6" style="margin-bottom:5px">
+                <select class="form-group col-md-6" asp-for="@Model.Time">
+                    <option value="09:00-09:30">09:00-09:30</option>
+                    <option value="10:00-10:30">10:00-10:30</option>
+                    <option value="11:00-11:30">11:00-11:30</option>
+                    <option value="13:00-13:30">13:00-13:30</option>
+                    <option value="14:00-14:30">14:00-14:30</option>
+                    <option value="15:00-15:30">15:00-15:30</option>
+                    <option value="16:00-16:30">16:00-16:30</option>
+                    <option value="17:00-17:30">17:00-17:30</option>
+                    <option value="18:00-18:30">18:00-18:30</option>
+                    <option value="19:00-19:30">19:00-19:30</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6" style="margin-bottom:5px">
+                <select class="form-group col-md-6" asp-for="@Model.DoctorId">
+                    @foreach (var doctor in Model.DoctorList)
+                    {
+                        <option class="form-group col-md-6" value=@doctor.DoctorId> @doctor.FirstName @doctor.LastName</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group col-md-6" style="margin-bottom:5px">
+                <select class="form-group col-md-6" asp-for="@Model.ProcedureId">
+                    @foreach (var procedure in Model.MedicalProcedureList)
+                    {
+                        <option class="form-group col-md-6" value=@procedure.ProcedureId> @procedure.Name</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-lg btn-primary p-2"><i class="bi bi-file-plus-fill"></i>Update</button>
+        <a asp-controller="Appointment" asp-action="Index" class="btn btn-lg btn-warning p-2">Back to Appointments</a>
+    </form>
+
+</div>

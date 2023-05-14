@@ -1,0 +1,59 @@
+﻿@using BLL.ViewModels;
+@using DAL.Constants;
+@model AppointmentViewModel
+
+<h1>List of Appointment</h1>
+
+@using (Html.BeginForm("Index", "Appointment", FormMethod.Post))
+{
+    <div class="container shadow p-5">
+        <div class="col mb-3">
+            <a asp-controller="Appointment" asp-action="Create" class="btn btn-lg btn-primary"><i class="bi bi-file-plus-fill"></i>Create Appointment</a>
+        </div>       
+
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Patient</th>
+                    <th scope="col">Doctor</th>
+                    <th scope="col">Procedure</th>
+                    <th scope="col">Date</th>
+                    @if (User.IsInRole("Admin"))
+                    {
+                      <th></th>  
+                    }                  
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in Model.AppointmentList)
+                {
+                    <tr>
+                        <td width="20%">
+                            @item.Patient.FirstName @item.Patient.LastName
+                        </td>
+                        <td width="20%">
+                            @item.Doctor.FirstName @item.Doctor.LastName
+                        </td>
+                        <td width="20%">
+                            @item.Procedure.Name
+                        </td>
+                        <td width="20%">
+                            @item.AppointmentDate.ToShortDateString() 
+                            @item.StartTime.ToString("hh\\:mm")-@item.EndTime.ToString("hh\\:mm")
+                        </td>                                                                                                  
+                        <td width="20%">
+                            <div role="group" class="w-60 btn-group">
+                                @if (User.IsInRole(Constants.adminRoleName) || User.IsInRole(Constants.doctorRoleName))
+                                {
+                                    <a asp-controller="Appointment" asp-action="Edit" asp-route-id="@item.AppointmentId" class=" btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i>Edit</a>
+                                }
+                                <a asp-controller="Appointment" asp-action="Delete" asp-route-id="@item.AppointmentId" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i>Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

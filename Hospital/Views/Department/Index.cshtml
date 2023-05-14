@@ -1,0 +1,50 @@
+﻿@using DAL.Models;
+@model IEnumerable<Department>
+
+<h1>Departments List</h1>
+
+<div class="container shadow p-5">
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="col mb-3">
+            <a asp-controller="Department" asp-action="Create" class="btn btn-lg btn-primary"><i class="bi bi-file-plus-fill"></i>Create Department</a>
+        </div>
+    }
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Department name</th>
+                <th scope="col">Description</th>
+                @if (User.IsInRole("Admin"))
+                {
+                   <th></th> 
+                }        
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td width="20%">
+                            @item.Name
+                        </td>
+                        <td width="70%">
+                            @item.Description
+                        </td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <td width="10%">
+                                <div role="group" class="w-60 btn-group">
+                                    <a asp-controller="Department" asp-action="Edit" asp-route-id="@item.DepartmentId" class=" btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i>Edit</a>&nbsp;
+                                    <a asp-controller="Department" asp-action="Delete" asp-route-id="@item.DepartmentId" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i>Delete</a>
+                                </div>
+                            </td>
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

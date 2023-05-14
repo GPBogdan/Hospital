@@ -1,0 +1,54 @@
+﻿@using DAL.Models;
+@model IEnumerable<MedicalProcedure>
+
+<h1>Procedures List</h1>
+
+<div class="container shadow p-5">
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="col mb-3">
+            <a asp-controller="MedicalProcedure" asp-action="Create" class="btn btn-lg btn-primary"><i class="bi bi-file-plus-fill"></i>Create Procedure</a>
+        </div>
+    }
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Procedure</th>
+                <th scope="col">Price</th>
+                <th scope="col">Description</th>
+                @if (User.IsInRole("Admin"))
+                {
+                   <th></th> 
+                }               
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td width="20%">
+                            @item.Name
+                        </td>
+                        <td width="10%">
+                            @item.Price
+                        </td>
+                        <td width="50%">
+                            @item.Description
+                        </td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <td>
+                                <div role="group" class="w-60 btn-group">
+                                    <a asp-controller="MedicalProcedure" asp-action="Edit" asp-route-id="@item.ProcedureId" class=" btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i>Edit</a>&nbsp;
+                                    <a asp-controller="MedicalProcedure" asp-action="Delete" asp-route-id="@item.ProcedureId" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i>Delete</a>
+                                </div>
+                            </td>
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,76 @@
+﻿@using BLL.ViewModels;
+@model DoctorViewModel
+
+@{
+    ViewData["Title"] = "Doctor Page";
+}
+
+<h1>Doctors</h1>
+
+<div class="container shadow p-5">
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="col mb-3">
+            <a asp-controller="Doctor" asp-action="Create" class="btn btn-lg btn-primary"><i class="bi bi-file-plus-fill"></i>Create Doctor</a>
+        </div>
+    }
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Photo</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Birthday</th>
+                <th scope="col">Adress</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Email</th>
+                <th scope="col">Department</th>
+                @if (User.IsInRole("Admin"))
+                {
+                    <th></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model.Doctors)
+            {
+                <tr>
+                    <td width="15%">
+                        <img src="@Url.Content(item.PhotoUrl)" style="display:block;border-radius:50%;width:100px;margin-left:auto;margin-right:auto;" border="0" alt="Photo" />
+                    </td>
+                    <td width="20%">
+                        @item.FirstName
+                    </td>
+                    <td width="20%">
+                        @item.LastName
+                    </td>
+                    <td width="10%">
+                        @item.DateOfBirth.ToString("dd-MM-yyyy")
+                    </td>
+                    <td width="25%">
+                        @item.Address
+                    </td>
+                    <td width="15%">
+                        @item.PhoneNumber
+                    </td>
+                    <td width="20%">
+                        @item.Email
+                    </td>
+                    <td width="20%">
+                        @item.Department.Name
+                    </td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td>
+                            <div role="group" class="w-60 btn-group">
+                                <a asp-controller="Doctor" asp-action="Edit" asp-route-id="@item.DoctorId" class=" btn btn-sm btn-primary"><i class="bi bi-pencil-square"></i>Edit</a>&nbsp;
+                                <a asp-controller="Doctor" asp-action="Delete" asp-route-id="@item.DoctorId" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i>Delete</a>
+                            </div>
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
