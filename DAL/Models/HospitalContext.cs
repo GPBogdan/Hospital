@@ -40,6 +40,8 @@ public partial class HospitalContext : IdentityHospitalContext
             entity.Property(e => e.DoctorId).HasColumnName("DoctorID");
             entity.Property(e => e.PatientId).HasColumnName("PatientID");
             entity.Property(e => e.ProcedureId).HasColumnName("ProcedureID");
+            entity.Property(e => e.AppointmentStatus).HasColumnName("AppointmentStatus");
+            entity.Property(e => e.AppointmentConclusion).HasColumnName("AppointmentConclusion");
 
             entity.HasOne(d => d.Doctor).WithMany(p => p.Appointments)
                 .HasForeignKey(d => d.DoctorId)
@@ -55,6 +57,13 @@ public partial class HospitalContext : IdentityHospitalContext
                 .HasForeignKey(d => d.ProcedureId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Appointme__Proce__787EE5A0");
+
+            entity.Property(d => d.AppointmentConclusion)
+                .HasMaxLength(500)
+                .IsUnicode(true);
+            entity.Property(d => d.AppointmentStatus)
+                .HasMaxLength(1)
+                .IsUnicode(false);
         });
 
         modelBuilder.Entity<Department>(entity =>

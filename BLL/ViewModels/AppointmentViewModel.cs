@@ -28,6 +28,10 @@ namespace BLL.ViewModels
 
         public TimeSpan EndTime { get; set; }
 
+        public string AppointmentStatus { get; set; } = "0";
+
+        public string AppointmentConclusion { get; set; } = "Write conclusion here";
+
         public AppointmentViewModel() { }
 
         public AppointmentViewModel(IEnumerable<Appointment> appointmentList, IEnumerable<Doctor> doctorList,

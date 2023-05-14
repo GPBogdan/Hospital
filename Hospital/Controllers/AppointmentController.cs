@@ -122,6 +122,8 @@ namespace Hospital.Controllers
                     viewModel.MedicalProcedureList = _medicalProcedureService.GetAll();
                     viewModel.ProcedureId = appointment.ProcedureId;
                     viewModel.PatientId = appointment.PatientId;
+                    viewModel.AppointmentConclusion = appointment.AppointmentConclusion;
+                    viewModel.AppointmentStatus = appointment.AppointmentStatus;
 
                     return View(viewModel);
                 }

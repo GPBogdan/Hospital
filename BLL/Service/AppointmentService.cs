@@ -28,7 +28,9 @@ namespace BLL.Service
                         || x.DoctorId == appointment.DoctorId
                         && x.StartTime == appointment.StartTime && x.EndTime == appointment.EndTime);
 
-                    if (isAppointment == null)
+                    var isCorerctDate = DateTime.Now.Date <= appointment.AppointmentDate && appointment.StartTime > DateTime.Now.TimeOfDay;
+
+                    if (isAppointment == null && isCorerctDate)
                     {
                         return _repository.Create(appointment);
                     }
@@ -73,7 +75,9 @@ namespace BLL.Service
                         AppointmentDate = appointmentViewModel.AppointmentDate,
                         StartTime = startTime,
                         EndTime = endTime,
-                        PatientId = appointmentViewModel.PatientId
+                        PatientId = appointmentViewModel.PatientId,
+                        AppointmentStatus = appointmentViewModel.AppointmentStatus,
+                        AppointmentConclusion = appointmentViewModel.AppointmentConclusion
                     };
 
                     var appointmentResult = Create(data);
