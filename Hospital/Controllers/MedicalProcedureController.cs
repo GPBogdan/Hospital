@@ -18,7 +18,7 @@ namespace Hospital.Controllers
             _logger = logger;
         }
 
-        [AllowAnonymous]
+        
         public IActionResult Index()
         {
             IEnumerable<MedicalProcedure>? medicalProcedureList = _medicalProcedureService.GetAll();
