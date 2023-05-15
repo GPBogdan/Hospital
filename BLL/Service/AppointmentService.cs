@@ -22,17 +22,26 @@ namespace BLL.Service
                 if (appointment != null)
                 {
                     Appointment? isAppointment = _repository.GetAll()
-                        .FirstOrDefault(x => x.AppointmentDate == appointment.AppointmentDate 
-                        && x.StartTime == appointment.StartTime && x.EndTime == appointment.EndTime
-                        || x.AppointmentDate == appointment.AppointmentDate && x.ProcedureId == appointment.ProcedureId
-                        || x.DoctorId == appointment.DoctorId
-                        && x.StartTime == appointment.StartTime && x.EndTime == appointment.EndTime);
+                        .FirstOrDefault(x => x.PatientId == appointment.PatientId && x.AppointmentDate.Date == appointment.AppointmentDate.Date
+                         && x.StartTime == appointment.StartTime && x.EndTime == appointment.EndTime
+                        || x.PatientId == appointment.PatientId && x.AppointmentDate == appointment.AppointmentDate && x.ProcedureId == appointment.ProcedureId
+                        || x.PatientId == appointment.PatientId &&  x.AppointmentDate.Date == appointment.AppointmentDate.Date 
+                        && x.DoctorId == appointment.DoctorId);
 
-                    var isCorerctDate = DateTime.Now.Date <= appointment.AppointmentDate && appointment.StartTime > DateTime.Now.TimeOfDay;
-
-                    if (isAppointment == null && isCorerctDate)
+                    if (isAppointment == null && DateTime.Now.Date <= appointment.AppointmentDate.Date)
                     {
-                        return _repository.Create(appointment);
+                        if (DateTime.Now.Date == appointment.AppointmentDate.Date && appointment.StartTime > DateTime.Now.TimeOfDay)
+                        {
+                            return _repository.Create(appointment);
+                        }
+                        else if(DateTime.Now.Date < appointment.AppointmentDate.Date)
+                        {
+                            return _repository.Create(appointment);
+                        }
+                        else
+                        {
+                            return new Appointment();
+                        }
                     }
                     else
                     {
